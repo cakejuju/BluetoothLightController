@@ -11,7 +11,7 @@ int led_direction = 12;
 
 String comdata = "";
 String blue_tooth_data = "";
-int mode_controll = 0;  // 控制模式,0为关闭模式
+int mode_controll = 3;  // 控制模式,0为关闭模式
 
 // 以下为夜间模式下与人体感应模块结合控制LED的变量
 String condition = "no_one_moved"; //默认condition,客厅没有移动的热量
@@ -48,20 +48,20 @@ static int thread1_entry(struct pt *pt)
     if (comdata.length() > 0)
     {
       if(comdata == "high" || comdata == "blink" ||  comdata == "ktv"){
-        Serial.println("high起来啦");
+        Serial.println("进入ktv嗨起模式");
         mode_controll = 1;  // 1代表high起来
-        digitalWrite(led_direction, HIGH); 
+        digitalWrite(led_direction, LOW); 
        }
        else if(comdata == "sleep"){
         Serial.println("睡眠模式1");
         mode_controll = 2;  // 2代表夜间模式
-        digitalWrite(led_direction, HIGH); 
+        digitalWrite(led_direction, LOW); 
        }else if(comdata == "off"){
         mode_controll = 0;  // 0代表关闭模式
         analogWrite(Led_controll, 0);
        }
        else if(comdata == "normal"){
-        digitalWrite(led_direction, HIGH);  
+        digitalWrite(led_direction, LOW);  
         mode_controll = 3;    // 3代表正常模式 可以调节灯的亮度
         }
       Serial.println(comdata);
@@ -184,9 +184,9 @@ int soundSensor(){
 void ktv_mode(){
   turn_on_light(soundSensor());
 //  turn_on_light(255);
-  digitalWrite(led_direction, HIGH); 
-  Serial.print(soundSensor());
-  Serial.print("   is soundSensor result\n");
+  digitalWrite(led_direction, LOW); 
+//  Serial.print(soundSensor());
+//  Serial.print("   is soundSensor result\n");
 }
 
 void blink(){
